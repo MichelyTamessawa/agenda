@@ -9,19 +9,23 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 
-import alura.com.br.dao.AlunoDAO;
+import alura.com.br.asyncTasks.BuscaAlunos;
+import alura.com.br.asyncTasks.RemoveAluno;
+import alura.com.br.database.AgendaDatabase;
+import alura.com.br.database.dao.AlunoDAO;
 import alura.com.br.model.Aluno;
 import alura.com.br.ui.adapter.ListaAlunosAdapter;
 
 public class ListaAlunosView {
-    private final AlunoDAO dao;
+    private final AlunoDAO alunoDAO;
     private final ListaAlunosAdapter adapter;
     private final Context context;
 
     public ListaAlunosView(Context context) {
         this.context = context;
         this.adapter = new ListaAlunosAdapter(context);
-        this.dao = new AlunoDAO();
+        AgendaDatabase database = AgendaDatabase.getInstance(context);
+        alunoDAO = database.getRoomAlunoDAO();
     }
 
     public void confirmaRemocao(@NonNull final MenuItem item) {
@@ -31,7 +35,8 @@ public class ListaAlunosView {
                 .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                        AdapterView.AdapterContextMenuInfo menuInfo =
+                                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                         Aluno alunoEscolhido = adapter.getItem(menuInfo.position);
                         remove(alunoEscolhido);
                     }
@@ -41,12 +46,12 @@ public class ListaAlunosView {
     }
 
     public void atualizaAlunos() {
-        adapter.atualiza(dao.todos());
+        new BuscaAlunos(alunoDAO, adapter).execute();
+
     }
 
     private void remove(Aluno alunoEscolhido) {
-        dao.remove(alunoEscolhido);
-        adapter.remove(alunoEscolhido);
+        new RemoveAluno(alunoEscolhido, alunoDAO,adapter).execute();
     }
 
     public void configuraAdapter(ListView listaDeAlunos) {

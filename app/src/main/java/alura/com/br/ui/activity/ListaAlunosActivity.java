@@ -1,5 +1,7 @@
 package alura.com.br.ui.activity;
 
+import static alura.com.br.ui.activity.ConstantesActivities.CHAVE_ALUNO;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -18,18 +20,17 @@ import alura.com.br.R;
 import alura.com.br.model.Aluno;
 import alura.com.br.ui.ListaAlunosView;
 
-import static alura.com.br.ui.activity.ConstantesActivities.CHAVE_ALUNO;
-
 public class ListaAlunosActivity extends AppCompatActivity {
 
     private static final String TITULO_APPBAR = "Lista de alunos";
-    private ListaAlunosView listaAlunosView = new ListaAlunosView(this);
+    private ListaAlunosView listaAlunosView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_alunos);
         setTitle(TITULO_APPBAR);
+        listaAlunosView = new ListaAlunosView(this);
         configuraFabNovoAluno();
         configuraLista();
     }
@@ -88,7 +89,6 @@ public class ListaAlunosActivity extends AppCompatActivity {
         });
     }
 
-
     private void configuraListenerDeCliquePorItem(ListView listaDeAlunos) {
         listaDeAlunos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -104,8 +104,6 @@ public class ListaAlunosActivity extends AppCompatActivity {
         vaiParaFormularioActivity.putExtra(CHAVE_ALUNO, aluno);
         startActivity(vaiParaFormularioActivity);
     }
-
-
 }
 
 

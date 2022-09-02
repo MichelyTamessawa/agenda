@@ -11,13 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name=".AgendaApplication"
         tools:ignore="AllowBackup">
         <activity android:name=".ui.activity.FormularioAlunoActivity"/>
-        <activity android:name=".ui.activity.ListaAlunosActivity">
+        <activity android:name=".ui.activity.ListaAlunosActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
